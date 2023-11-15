@@ -8,6 +8,8 @@ using UnityEngine.SceneManagement;
 using static GrowableMoondewNectar.EntryPoint;
 using Object = UnityEngine.Object;
 
+[assembly: MelonInfo(typeof(GrowableMoondewNectar.EntryPoint), "Growable Moondew Nectar", "1.0.2", "KomiksPL", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonGame("MonomiPark", "SlimeRancher2")]
 namespace GrowableMoondewNectar
 {
     [HarmonyPatch(typeof(GardenCatcher), nameof(GardenCatcher.Awake))]
@@ -15,11 +17,12 @@ namespace GrowableMoondewNectar
     {
         public static void Prefix(GardenCatcher __instance)
         {
-            __instance.plantable = __instance.plantable.AddItem(new GardenCatcher.PlantSlot()
+            
+            __instance.Plantable = __instance.Plantable.AddItem(new GardenCatcher.PlantSlot()
             {
-                plantedPrefab = EntryPoint.TreeMoonflower01.prefab,
-                identType = EntryPoint.TreeMoonflower01.primaryResourceType,
-                deluxePlantedPrefab = EntryPoint.TreeMoonflower01.prefab
+                PlantedPrefab = EntryPoint.TreeMoonflower01.Prefab,
+                IdentType = EntryPoint.TreeMoonflower01.PrimaryResourceType,
+                DeluxePlantedPrefab = EntryPoint.TreeMoonflower01.Prefab
             }).ToArray();
 
         }
@@ -33,7 +36,7 @@ namespace GrowableMoondewNectar
             ResourceGrowerList resourceGrowerList = GetOrDefault<ResourceGrowerList>("ResourceGrowers");
             TreeMoonflower01 = ScriptableObject.CreateInstance<ResourceGrowerDefinition>();
             TreeMoonflower01.name = "PatchNectar01Mod";
-            TreeMoonflower01.persistenceId = "patchNectar01Mod";
+            TreeMoonflower01._persistenceId = "patchNectar01Mod";
             resourceGrowerList.items.Add(TreeMoonflower01);
         }
     }
@@ -56,17 +59,17 @@ namespace GrowableMoondewNectar
         public override void OnSceneWasLoaded(int buildIndex, string scene1)
         {
             if (!scene1.Equals("GameCore")) return;
-            TreeMoonflower01.prefab = Object.Instantiate(GetOrDefault<ResourceGrowerDefinition>("TreeMoonflower01").prefab, EntryPoint.DisabledGameObject);
-            TreeMoonflower01.primaryResourceType = GetOrDefault<IdentifiableType>("MoondewNectar");
-            TreeMoonflower01.resources = new[]
+            TreeMoonflower01._prefab = Object.Instantiate(GetOrDefault<ResourceGrowerDefinition>("TreeMoonflower01").Prefab, EntryPoint.DisabledGameObject);
+            TreeMoonflower01._primaryResourceType = GetOrDefault<IdentifiableType>("MoondewNectar");
+            TreeMoonflower01._resources = new[]
             {
                 new ResourceSpawnerDefinition.WeightedResourceEntry()
                 {
-                    weight = 1, minimumAmount = 5,
-                    resourceIdentifiableType = TreeMoonflower01.primaryResourceType
+                    Weight = 1, MinimumAmount = 5,
+                    ResourceIdentifiableType = TreeMoonflower01.PrimaryResourceType
                 }
             };
-            var treeMoonflower01Prefab = TreeMoonflower01.prefab;
+            var treeMoonflower01Prefab = TreeMoonflower01._prefab;
             var spawnResourceInChildren = treeMoonflower01Prefab.GetComponentInChildren<SpawnResource>();
             SlimeVarietyModulesStatic.GetCopyOf(treeMoonflower01Prefab.AddComponent<SpawnResource>(), spawnResourceInChildren);
             Object.Destroy(spawnResourceInChildren);
@@ -79,7 +82,7 @@ namespace GrowableMoondewNectar
                     
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(3.75f, localPositionY, 3.75f);
             var spawnResource = treeMoonflower01Prefab.GetComponent<SpawnResource>();
-            spawnResource.resourceGrowerDefinition = TreeMoonflower01;
+            spawnResource._resourceGrowerDefinition = TreeMoonflower01;
             var spawnJoint = spawnResource.SpawnJoints[0];
             var spawnJoint1 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
             spawnJoint1.transform.localPosition = new Vector3(3.75f, 0, -3.75f);
@@ -94,8 +97,8 @@ namespace GrowableMoondewNectar
                 spawnJoint, spawnJoint1.GetComponent<Joint>(), spawnJoint2.GetComponent<Joint>(), spawnJoint3.GetComponent<Joint>(), spawnJoint4.GetComponent<Joint>()
             };
             spawnResource.SpawnJoints = joints;
-            spawnResource.resourceGrowerDefinition.maxResources = 5;
-            spawnResource.resourceGrowerDefinition.minResources = 3;
+            spawnResource._resourceGrowerDefinition._maxResources = 5;
+            spawnResource._resourceGrowerDefinition._minResources = 3;
         }
     }
 }

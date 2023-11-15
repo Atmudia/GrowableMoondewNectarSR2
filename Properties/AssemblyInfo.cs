@@ -14,8 +14,7 @@ using MelonLoader;
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.1", "KomiksPL", "https://www.nexusmods.com/slimerancher2/mods/5")]
-[assembly: MelonGame("MonomiPark", "SlimeRancher2")]
+
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
