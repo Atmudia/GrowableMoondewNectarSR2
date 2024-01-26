@@ -1,16 +1,15 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using GrowableMoondewNectarMod;
 using HarmonyLib;
 using Il2Cpp;
 using MelonLoader;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using static GrowableMoondewNectar.EntryPoint;
+using static GrowableMoondewNectarMod.EntryPoint;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(GrowableMoondewNectar.EntryPoint), "Growable Moondew Nectar", "1.0.2", "KomiksPL", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.2 ", "KomiksPL", "https://www.nexusmods.com/slimerancher2/mods/5")]
 [assembly: MelonGame("MonomiPark", "SlimeRancher2")]
-namespace GrowableMoondewNectar
+namespace GrowableMoondewNectarMod
 {
     [HarmonyPatch(typeof(GardenCatcher), nameof(GardenCatcher.Awake))]
     public static class PatchGardenCatcherAwake
@@ -44,22 +43,22 @@ namespace GrowableMoondewNectar
     public class EntryPoint : MelonMod
     {
         public static ResourceGrowerDefinition TreeMoonflower01;
-        public static Transform DisabledGameObject;
+        public static Transform RuntimeObject;
         public static T GetOrDefault<T>(string name) where T : UnityEngine.Object => Resources.FindObjectsOfTypeAll<T>().FirstOrDefault(x => x.name == name);
 
         public override void OnInitializeMelon()
         {
             SystemContext.IsModded = true;
-            DisabledGameObject = new GameObject("DisabledGameObject").transform;
-            DisabledGameObject.gameObject.SetActive(false);
-            Object.DontDestroyOnLoad(DisabledGameObject.gameObject);
-            DisabledGameObject.gameObject.hideFlags |= HideFlags.HideAndDontSave;
+            RuntimeObject = new GameObject("RuntimeObject").transform;
+            RuntimeObject.gameObject.SetActive(false);
+            Object.DontDestroyOnLoad(RuntimeObject.gameObject);
+            RuntimeObject.gameObject.hideFlags |= HideFlags.HideAndDontSave;
         }
 
         public override void OnSceneWasLoaded(int buildIndex, string scene1)
         {
             if (!scene1.Equals("GameCore")) return;
-            TreeMoonflower01._prefab = Object.Instantiate(GetOrDefault<ResourceGrowerDefinition>("TreeMoonflower01").Prefab, EntryPoint.DisabledGameObject);
+            TreeMoonflower01._prefab = Object.Instantiate(GetOrDefault<ResourceGrowerDefinition>("TreeMoonflower01").Prefab, EntryPoint.RuntimeObject);
             TreeMoonflower01._primaryResourceType = GetOrDefault<IdentifiableType>("MoondewNectar");
             TreeMoonflower01._resources = new[]
             {

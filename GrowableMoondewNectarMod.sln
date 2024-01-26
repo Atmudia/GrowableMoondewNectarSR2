@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowableMoondewNectar", "GrowableMoondewNectar.csproj", "{2F5FE686-6CE1-46A3-BB72-15562A21AEAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowableMoondewNectarMod", "GrowableMoondewNectarMod.csproj", "{2F5FE686-6CE1-46A3-BB72-15562A21AEAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
