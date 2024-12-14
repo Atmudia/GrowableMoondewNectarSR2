@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Reflection;
 using GrowableMoondewNectarMod;
 using HarmonyLib;
 using Il2Cpp;
@@ -7,7 +9,7 @@ using UnityEngine;
 using static GrowableMoondewNectarMod.EntryPoint;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.2 ", "KomiksPL", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.3", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
 [assembly: MelonGame("MonomiPark", "SlimeRancher2")]
 namespace GrowableMoondewNectarMod
 {
@@ -39,6 +41,8 @@ namespace GrowableMoondewNectarMod
             resourceGrowerList.items.Add(TreeMoonflower01);
         }
     }
+    
+    [HarmonyPatch]
 
     public class EntryPoint : MelonMod
     {
@@ -70,7 +74,8 @@ namespace GrowableMoondewNectarMod
             };
             var treeMoonflower01Prefab = TreeMoonflower01._prefab;
             var spawnResourceInChildren = treeMoonflower01Prefab.GetComponentInChildren<SpawnResource>();
-            SlimeVarietyModulesStatic.GetCopyOf(treeMoonflower01Prefab.AddComponent<SpawnResource>(), spawnResourceInChildren);
+            var spawnResource = treeMoonflower01Prefab.AddComponent<SpawnResource>();
+            GetCopyOf(spawnResourceInChildren, spawnResource);
             Object.Destroy(spawnResourceInChildren);
                     
             var treeMesh = treeMoonflower01Prefab.transform.Find("treeMesh").gameObject;
@@ -80,7 +85,7 @@ namespace GrowableMoondewNectarMod
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(-3.75f, localPositionY, -3.75f);
                     
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(3.75f, localPositionY, 3.75f);
-            var spawnResource = treeMoonflower01Prefab.GetComponent<SpawnResource>();
+            // var spawnResource = treeMoonflower01Prefab.GetComponent<SpawnResource>();
             spawnResource._resourceGrowerDefinition = TreeMoonflower01;
             var spawnJoint = spawnResource.SpawnJoints[0];
             var spawnJoint1 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
@@ -99,5 +104,27 @@ namespace GrowableMoondewNectarMod
             spawnResource._resourceGrowerDefinition._maxResources = 5;
             spawnResource._resourceGrowerDefinition._minResources = 3;
         }
+        public static void GetCopyOf<T>(T from, T to) where T : new()
+        {
+            if (from == null) throw new ArgumentNullException(nameof(from));
+
+            Type type = typeof(T);
+
+            // Copy fields
+            foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                field.SetValue(to, field.GetValue(from));
+            }
+
+            // Copy properties
+            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            {
+                if (property.CanWrite)
+                {
+                    property.SetValue(to, property.GetValue(from));
+                }
+            }
+        }
     }
+
 }

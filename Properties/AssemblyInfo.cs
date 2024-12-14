@@ -8,7 +8,7 @@ using MelonLoader;
 [assembly: AssemblyTitle("GrowableMoondewNectar")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("KomiksPL")]
+[assembly: AssemblyCompany("Atmudia")]
 [assembly: AssemblyProduct("GrowableMoondewNectar")]
 [assembly: AssemblyCopyright("Copyright ©  2022")]
 [assembly: AssemblyTrademark("")]

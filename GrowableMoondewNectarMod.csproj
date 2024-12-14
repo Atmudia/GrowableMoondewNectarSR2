@@ -14,28 +14,31 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\net6\0Harmony.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\net6\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Common">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\net6\Il2CppInterop.Common.dll</HintPath>
     </Reference>
     <Reference Include="Il2CppInterop.Runtime">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Il2Cppmscorlib">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
     </Reference>
     <Reference Include="MelonLoader">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\net6\MelonLoader.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\net6\MelonLoader.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Slime Rancher 2\MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cp &quot;/HDD/Modding/SlimeRancher/SR2/GrowableMoondewNectarMod/bin/Debug/net6.0/GrowableMoondewNectarMod.dll&quot; &quot;/home/komik/.local/share/Steam/steamapps/common/Slime Rancher 2/Mods/&quot;" />
+  </Target>
 </Project>
