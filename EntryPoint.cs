@@ -4,12 +4,13 @@ using System.Reflection;
 using GrowableMoondewNectarMod;
 using HarmonyLib;
 using Il2Cpp;
+using Il2CppMonomiPark.SlimeRancher;
 using MelonLoader;
 using UnityEngine;
 using static GrowableMoondewNectarMod.EntryPoint;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.3", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.5", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
 [assembly: MelonGame("MonomiPark", "SlimeRancher2")]
 namespace GrowableMoondewNectarMod
 {
@@ -83,27 +84,30 @@ namespace GrowableMoondewNectarMod
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(3.75f, localPositionY, -3.75f);
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(-3.75f, localPositionY, 3.75f);
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(-3.75f, localPositionY, -3.75f);
-                    
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(3.75f, localPositionY, 3.75f);
-            // var spawnResource = treeMoonflower01Prefab.GetComponent<SpawnResource>();
-            spawnResource._resourceGrowerDefinition = TreeMoonflower01;
             var spawnJoint = spawnResource.SpawnJoints[0];
+            localPositionY = spawnJoint.transform.localPosition.y;
             var spawnJoint1 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
-            spawnJoint1.transform.localPosition = new Vector3(3.75f, 0, -3.75f);
+            spawnJoint1.transform.localPosition = new Vector3(3.75f, localPositionY, -3.75f);
             var spawnJoint2 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
-            spawnJoint2.transform.localPosition = new Vector3(-3.75f, 0, 3.75f);
+            spawnJoint2.transform.localPosition = new Vector3(-3.75f, localPositionY, 3.75f);
             var spawnJoint3 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
-            spawnJoint3.transform.localPosition = new Vector3(-3.75f, 0, -3.75f);
+            spawnJoint3.transform.localPosition = new Vector3(-3.75f, localPositionY, -3.75f);
             var spawnJoint4 = Object.Instantiate(spawnJoint.gameObject, spawnJoint.transform.parent);
-            spawnJoint4.transform.localPosition = new Vector3(3.75f, 0, 3.75f);
+            spawnJoint4.transform.localPosition = new Vector3(3.75f, localPositionY, 3.75f);
 
             Joint[] joints = {
-                spawnJoint, spawnJoint1.GetComponent<Joint>(), spawnJoint2.GetComponent<Joint>(), spawnJoint3.GetComponent<Joint>(), spawnJoint4.GetComponent<Joint>()
+                spawnJoint, 
+                spawnJoint1.GetComponent<Joint>(),
+                spawnJoint2.GetComponent<Joint>(),
+                spawnJoint3.GetComponent<Joint>(),
+                spawnJoint4.GetComponent<Joint>()
             };
             spawnResource.SpawnJoints = joints;
             spawnResource._resourceGrowerDefinition._maxResources = 5;
             spawnResource._resourceGrowerDefinition._minResources = 3;
         }
+
         public static void GetCopyOf<T>(T from, T to) where T : new()
         {
             if (from == null) throw new ArgumentNullException(nameof(from));
@@ -111,13 +115,15 @@ namespace GrowableMoondewNectarMod
             Type type = typeof(T);
 
             // Copy fields
-            foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (FieldInfo field in type.GetFields(BindingFlags.Public | BindingFlags.NonPublic |
+                                                       BindingFlags.Instance))
             {
                 field.SetValue(to, field.GetValue(from));
             }
 
             // Copy properties
-            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+            foreach (PropertyInfo property in type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic |
+                                                                 BindingFlags.Instance))
             {
                 if (property.CanWrite)
                 {
