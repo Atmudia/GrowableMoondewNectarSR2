@@ -10,7 +10,7 @@ using UnityEngine;
 using static GrowableMoondewNectarMod.EntryPoint;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.5", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.6", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
 [assembly: MelonGame("MonomiPark", "SlimeRancher2")]
 namespace GrowableMoondewNectarMod
 {
@@ -19,7 +19,6 @@ namespace GrowableMoondewNectarMod
     {
         public static void Prefix(GardenCatcher __instance)
         {
-            
             __instance.Plantable = __instance.Plantable.AddItem(new GardenCatcher.PlantSlot()
             {
                 PlantedPrefab = EntryPoint.TreeMoonflower01.Prefab,
@@ -39,6 +38,7 @@ namespace GrowableMoondewNectarMod
             TreeMoonflower01 = ScriptableObject.CreateInstance<ResourceGrowerDefinition>();
             TreeMoonflower01.name = "PatchNectar01Mod";
             TreeMoonflower01._persistenceId = "patchNectar01Mod";
+            TreeMoonflower01.hideFlags |= HideFlags.HideAndDontSave;
             resourceGrowerList.items.Add(TreeMoonflower01);
         }
     }
@@ -78,7 +78,8 @@ namespace GrowableMoondewNectarMod
             var spawnResource = treeMoonflower01Prefab.AddComponent<SpawnResource>();
             GetCopyOf(spawnResourceInChildren, spawnResource);
             Object.Destroy(spawnResourceInChildren);
-                    
+            spawnResource._resourceGrowerDefinition = TreeMoonflower01;
+
             var treeMesh = treeMoonflower01Prefab.transform.Find("treeMesh").gameObject;
             var localPositionY = treeMesh.transform.localPosition.y;
             Object.Instantiate(treeMesh, treeMesh.transform.parent).transform.localPosition = new Vector3(3.75f, localPositionY, -3.75f);
