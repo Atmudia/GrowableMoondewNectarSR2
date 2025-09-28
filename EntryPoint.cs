@@ -5,12 +5,13 @@ using GrowableMoondewNectarMod;
 using HarmonyLib;
 using Il2Cpp;
 using Il2CppMonomiPark.SlimeRancher;
+using Il2CppMonomiPark.SlimeRancher.DataModel;
 using MelonLoader;
 using UnityEngine;
 using static GrowableMoondewNectarMod.EntryPoint;
 using Object = UnityEngine.Object;
 
-[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.6", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
+[assembly: MelonInfo(typeof(EntryPoint), "Growable Moondew Nectar", "1.0.7", "Atmudia", "https://www.nexusmods.com/slimerancher2/mods/5")]
 [assembly: MelonGame("MonomiPark", "SlimeRancher2")]
 namespace GrowableMoondewNectarMod
 {
@@ -21,9 +22,9 @@ namespace GrowableMoondewNectarMod
         {
             __instance.Plantable = __instance.Plantable.AddItem(new GardenCatcher.PlantSlot()
             {
-                PlantedPrefab = EntryPoint.TreeMoonflower01.Prefab,
-                IdentType = EntryPoint.TreeMoonflower01.PrimaryResourceType,
-                DeluxePlantedPrefab = EntryPoint.TreeMoonflower01.Prefab
+                PlantedPrefab = TreeMoonflower01.Prefab,
+                IdentType = TreeMoonflower01.PrimaryResourceType,
+                DeluxePlantedPrefab = TreeMoonflower01.Prefab
             }).ToArray();
 
         }
@@ -42,13 +43,22 @@ namespace GrowableMoondewNectarMod
             resourceGrowerList.items.Add(TreeMoonflower01);
         }
     }
+
+    [HarmonyPatch(typeof(LandPlot), nameof(LandPlot.SetModel))]
+    public static class PatchLandPlotSetModel
+    {
+        public static void Prefix(LandPlotModel model)
+        {
+            if (model != null && model.resourceGrowerDefinition != null && model.resourceGrowerDefinition.name.Equals("TreeMoonflower01"))
+                model.resourceGrowerDefinition = TreeMoonflower01;
+        }
+    }
     
-    [HarmonyPatch]
 
     public class EntryPoint : MelonMod
     {
         public static ResourceGrowerDefinition TreeMoonflower01;
-        public static Transform RuntimeObject;
+        private static Transform RuntimeObject;
         public static T GetOrDefault<T>(string name) where T : UnityEngine.Object => Resources.FindObjectsOfTypeAll<T>().FirstOrDefault(x => x.name == name);
 
         public override void OnInitializeMelon()
